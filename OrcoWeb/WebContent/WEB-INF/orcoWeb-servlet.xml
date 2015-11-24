@@ -1,0 +1,54 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+	<context:component-scan base-package="com.criterya.orcoWeb.controller" />
+ 
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	
+	<!-- Hibernate configuration -->
+	<bean id="myDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+    </bean>
+
+    <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="myDataSource"/>
+        <property name="mappingResources">
+            <list>
+                <value>com/criterya/orco/model/Log.hbm.xml</value>
+                <value>com/criterya/orco/model/Pickup.hbm.xml</value>
+                <value>com/criterya/orco/model/Times.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <value>
+                hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+                hibernate.current_session_context_class=thread
+                show_sql=true
+            </value>
+        </property>
+    </bean>
+    
+    <bean id="transactionManager"
+            class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+ 
+</beans>
