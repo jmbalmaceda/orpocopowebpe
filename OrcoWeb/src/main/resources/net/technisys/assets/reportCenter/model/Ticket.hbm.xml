@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="net.technisys.assets.reportCenter.model.Ticket" table="TICKET" >
+        <id name="ticketId" type="java.lang.Long" column="ID_TICKET">
+        	<generator class="native">
+        		<param name="sequence">SEQ_TICKET</param>
+        	</generator>
+        </id>
+        <property name="amount" column="D_AMOUNT" />
+        <property name="applicantOperator" column="S_APPLICANT_OPERATOR" type="string" />
+        <property name="generationDate" column="DT_GENERATION_DATE" type="java.util.Date" />
+        <property name="operationNumber" column="S_OPERATION_NUMBER" type="string" />
+        <property name="operationState" column="S_OPERATION_STATE" type="string" />
+        <property name="operationType" column="S_OPERATION_TYPE" type="string" />
+        <property name="operator" column="S_OPERATOR" type="string" />
+        <many-to-one name="parentTicket" column="N_PARENT_TICKET" class="net.technisys.assets.reportCenter.model.Ticket"/>
+    	<property name="rawMessage" column="S_RAW_MESSAGE" type="string" />
+        <property name="serviceId" column="S_SERVICE_ID" type="string" />
+        <property name="scope" column="S_SCOPE" type="string" />
+        <many-to-one name="template" column="N_TEMPLATE" class="net.technisys.assets.reportCenter.model.Template" lazy="false" />
+        <property name="ticketGenerationState" column="S_TICKET_GENERATION_STATE" type="string" />
+        <property name="ticketRepresentationFile" column="S_TICKET_REPRESENTATION_FILE" type="string" lazy="true" />
+        <property name="iconRepresentationFile" column="S_ICON_REPRESENTATION_FILE" type="string" lazy="true" />
+        <property name="ticketRepresentationMIME" column="S_TICKET_REPRESENTATION_MIME" type="string" />
+        <property name="ticketSourceFile" column="S_TICKET_SOURCE_FILE" type="string" />  
+        <property name="ticketUniqueNumber" column="S_TICKET_UNIQUE_NUMBER" type="string" />
+    	<property name="traceNumber" column="S_TRACE_NUMBER" type="string" />
+    	<property name="verificationNumber" column="S_VERIFICATION_NUMBER" type="string" /> 
+    	<property name="currency" column="S_CURRENCY" type="string" />               
+    </class>
+    
+    
+</hibernate-mapping>

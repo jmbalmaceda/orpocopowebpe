@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="net.technisys.assets.reportCenter.model.Template" table="TEMPLATE" >
+        
+               
+        <id name="templateId" type="java.lang.Long" column="ID_TEMPLATE">
+        	<generator class="native">
+        		<param name="sequence">SEQ_TEMPLATE</param>
+        	</generator>
+        </id>
+        
+        <property name="templateName" column="S_TEMPLATE_NAME" />
+ 		<!-- 
+		<list name="filterFields" table="TEMPLATE_FILTER_FIELD" lazy="false" cascade="all">
+			<key column="N_ID_TEMPLATE" />
+			<list-index column="FF_ID" />
+			<one-to-many class="FilterField"/>
+		</list>
+		 -->
+		<bag name="filterFields" table="TEMPLATE_FILTER_FIELD" order-by="S_KEY asc" lazy="false" cascade="all">
+		    <key column="N_ID_TEMPLATE"/>
+		    <element column="S_KEY" type="string"/>
+		</bag>
+        
+        <property name="templateFile" column="S_TEMPLATE_FILE" />
+        <property name="templateThumbnailFile" column="S_TEMPLATE_THUMBNAIL_FILE" />
+    </class>
+</hibernate-mapping>
