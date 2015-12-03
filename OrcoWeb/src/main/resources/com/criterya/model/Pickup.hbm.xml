@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 07-sep-2015 0:05:09 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.criterya.orco.model.Pickup" table="pickup">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="frame" type="java.lang.Integer">
+            <column name="frame" />
+        </property>
+        <property name="currentTime" type="timestamp">
+            <column name="current_time" length="19" />
+        </property>
+        <property name="countBlobs" type="java.lang.Integer">
+            <column name="count_blobs" />
+        </property>
+        <property name="blobId" type="java.lang.Integer">
+            <column name="blob_id" />
+        </property>
+        <property name="blobX" type="java.lang.Integer">
+            <column name="blob_x" />
+        </property>
+        <property name="blobY" type="java.lang.Integer">
+            <column name="blob_y" />
+        </property>
+        <property name="blobDepth" type="java.lang.Integer">
+            <column name="blob_depth" />
+        </property>
+        <property name="blobHandId" type="java.lang.Integer">
+            <column name="blob_hand_id" />
+        </property>
+        <property name="blobHandX" type="java.lang.Integer">
+            <column name="blob_hand_x" />
+        </property>
+        <property name="blobHandY" type="java.lang.Integer">
+            <column name="blob_hand_y" />
+        </property>
+        <property name="blobHandDepth" type="java.lang.Integer">
+            <column name="blob_hand_depth" />
+        </property>
+        <property name="newTablecol" type="string">
+            <column name="new_tablecol" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

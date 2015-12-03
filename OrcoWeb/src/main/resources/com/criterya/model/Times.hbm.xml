@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 07-sep-2015 0:05:09 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.criterya.orco.model.Times" table="times">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="weekDay" type="int">
+            <column name="week_day" not-null="true" />
+        </property>
+        <property name="start" type="time">
+            <column name="start" length="8" not-null="true" />
+        </property>
+        <property name="finish" type="time">
+            <column name="finish" length="8" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
