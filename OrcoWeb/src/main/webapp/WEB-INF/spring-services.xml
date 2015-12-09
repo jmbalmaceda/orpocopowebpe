@@ -12,23 +12,19 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd">
 			
+	<import resource="classpath:/daos-configuration.xml"/>
+	<import resource="classpath:/services-configuration.xml"/>
+	
 	<tx:annotation-driven/>
 	
 	
 	<!-- Configuración de base de datos usando JDBC -->
-	<bean id="orcoDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true">
-		<property name="driverClass" value="${reportCenter.hibernate.connection.driver_class}"/>
-		<property name="jdbcUrl" value="${reportCenter.hibernate.connection.url}"/>
-
-		<property name="user" value="${reportCenter.hibernate.connection.username}"/>
-		<property name="password" value="${reportCenter.hibernate.connection.password}"/>
-		
-		<property name="minPoolSize" value="${hibernate.c3p0.min_size}"/>
-		<property name="maxPoolSize" value="${hibernate.c3p0.max_size}"/>
-		<property name="maxStatements" value="${hibernate.c3p0.c3p0.max_statements}"/> 
-		<property name="preferredTestQuery" value="${hibernate.connection.validationQuery}"/>
+	<bean id="orcoDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/"/>
+		<property name="username" value="root"/>
+		<property name="password" value=""/>
 	</bean>
-	
 	
 	<!-- Session Factory -->
 	<bean id="orcoSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -36,8 +32,8 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
         <property name="configLocation" value="classpath:hibernate-orco.cfg.xml" />
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">${reportCenter.hibernate.dialect}</prop>
-                <prop key="hibernate.default_schema">${reportCenter.hibernate.default_schema}</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.default_schema">orcodb</prop>
             </props>
         </property>
     </bean>

@@ -1,0 +1,92 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<mvc:annotation-driven/>
+
+    <bean
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <context:component-scan base-package="com.criterya.orcoWeb.controller" />
+     	
+ 	<!-- Scan the JavaConfig -->
+    <!-- <context:component-scan base-package="net.technisys.assets.reportCenter.config" /> -->
+    	
+    <bean id="viewResolver"
+    	class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <property name="prefix">
+            <value>/WEB-INF/jsp/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+	 
+	<bean class="org.springframework.context.support.ResourceBundleMessageSource"
+		id="messageSource">
+		<property name="basename" value="messages" />
+	</bean>
+
+	<!--
+    <bean name="/upload.htm" class="net.technisys.assets.reportCenter.controller.FileUploadController">
+    	<property name="templateService" ref="templateService" />
+    	<property name="elementService" ref="elementService" />
+    	<property name="showIcons">
+			<value>#{reportCenterProperties['generateIcons']}</value>
+		</property>
+	</bean>
+	
+	<bean name="/viewTemplate.htm" id="viewTemplate" class="net.technisys.assets.reportCenter.controller.TemplateValidatorController">
+		<property name="templateDao" ref="templateDao" />
+		<property name="templateJasperDao" ref="templateJasperDao" />
+		<property name="cmmLookUp" ref="cmmLookUp" />
+	</bean>
+	
+	<bean name="/selectTicket.htm" id="ticketView" class="net.technisys.assets.reportCenter.controller.SelectTicketController">
+		<property name="ticketService" ref="ticketService" />
+		<property name="templateService" ref="templateService" />
+	</bean>
+	
+	<bean name="/viewTicket.htm" id="viewTicket" class="net.technisys.assets.reportCenter.controller.ViewTicketController">
+		<property name="ticketService" ref="ticketService" />
+		<property name="showIcons">
+			<value>#{reportCenterProperties['generateIcons']}</value>
+		</property>
+	</bean>
+	
+	<bean name="/customizeTemplate.htm" id="customTemplate" class="net.technisys.assets.reportCenter.controller.CustomizeTemplateController">
+		<property name="templateService" ref="templateService" />
+		<property name="elementService" ref="elementService" />
+	</bean>
+	
+	<bean name="/viewCustomTemplate.htm" id="viewCustomTemplate" class="net.technisys.assets.reportCenter.controller.CustomTemplateValidatorController">
+		<property name="templateService" ref="templateService" />
+	</bean>
+	
+	<bean name="/filterFields.htm" id="filterFields" class="net.technisys.assets.reportCenter.controller.FilterFieldsController">
+		<property name="elementService" ref="elementService" />
+	</bean>
+	
+	<bean name="/addFilterFields.htm" id="addFilterFields" class="net.technisys.assets.reportCenter.controller.AddFilterFieldsController">
+	</bean>
+	
+	<bean name="/viewFilterFields.htm" id="viewFilterFields" class="net.technisys.assets.reportCenter.controller.FilterFieldsValidatorController">
+		<property name="elementService" ref="elementService" />
+	</bean>
+	
+	<bean name="/detailsFilterFields.htm" id="detailsFilterFields" class="net.technisys.assets.reportCenter.controller.DetailsFilterFieldsController">
+		<property name="elementService" ref="elementService" />
+	</bean>
+	
+	<bean name="/index.htm" id="index" class="net.technisys.assets.reportCenter.controller.IndexController">
+	</bean>
+	-->
+ 	
+</beans>

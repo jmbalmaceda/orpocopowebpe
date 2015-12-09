@@ -1,14 +1,14 @@
-package com.criterya.orcoWeb.controller;
+package com.criterya.orco.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class OrcoWebHome {
+public class HomeController {
 
-	@RequestMapping("/orcoWeb")
-	public ModelAndView helloWorld() {
-		return new ModelAndView("OrcoWebHome");
+	@RequestMapping("/index")
+	public ModelAndView index() {
+		return new ModelAndView("index");
 	}
 }
