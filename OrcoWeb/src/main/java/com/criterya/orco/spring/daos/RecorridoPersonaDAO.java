@@ -1,4 +1,4 @@
-package com.criterya.orco.daos;
+package com.criterya.orco.spring.daos;
 
 import java.util.ArrayList;
 import java.util.Calendar;

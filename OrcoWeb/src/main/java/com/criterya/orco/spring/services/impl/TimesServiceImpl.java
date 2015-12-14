@@ -1,13 +1,13 @@
-package com.criterya.orco.services.impl;
+package com.criterya.orco.spring.services.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.criterya.orco.daos.TimesDao;
 import com.criterya.orco.model.Times;
-import com.criterya.orco.services.TimesService;
+import com.criterya.orco.spring.daos.TimesDao;
+import com.criterya.orco.spring.services.TimesService;
 
 @Service("timesService")
 public class TimesServiceImpl implements TimesService {
@@ -28,6 +28,11 @@ public class TimesServiceImpl implements TimesService {
 
 	public void setTimesDao(TimesDao timesDao) {
 		this.timesDao = timesDao;
+	}
+
+	@Override
+	public Times getTime(Integer id) {
+		return timesDao.getTime(id);
 	}
 
 }

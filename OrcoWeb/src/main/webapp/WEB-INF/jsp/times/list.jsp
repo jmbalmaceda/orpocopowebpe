@@ -16,7 +16,7 @@
 
 <body>
 	<jsp:include page="../fragments/header.jsp" />
-	<jsp:include page="../fragments/headerelement.jsp" />
+	<!-- jsp:include page="../fragments/headerelement.jsp" /-->
 	
 	<div class="container">
 		<c:if test="${not empty msg}">
@@ -28,34 +28,32 @@
 			<strong>${msg}</strong>
 		    </div>
 		</c:if>
-		<h3>Todos los Elementos</h3>
+		<h3>Horarios de Análisis</h3>
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Nombre del Elemento</th>
-					<th>Descripcion</th>
-					<th>Resumen (ambito y error)</th>
-					<th>Accion</th>
+					<th>Día de la semana</th>
+					<th>Comienzo</th>
+					<th>Fin</th>
+					<th>Acción</th>
 				</tr>
 			</thead>
 
-			<c:forEach var="filter" items="${filterFields}">
+			<c:forEach var="time" items="${times}">
 			    <tr>
 				<td>
-					${filter.elementName}
+					${time.weekDay}
 				</td>
 				<td>
-					${filter.description}
+					${time.start}
 				</td>
-				<td>${filter.summary}</td>
+				<td>${time.finish}</td>
 				<td>
-				  <spring:url value="/filterFields/${filter.elementId}.htm" var="filterFieldsUrl" />
-				  <spring:url value="/filterFields/${filter.elementId}/update.htm" var="updateFilterFieldsUrl" />
+				  <spring:url value="/times/${time.id}/delete.htm" var="deleteUrl" />
+				  <spring:url value="/times/${time.id}/update.htm" var="updateUrl" />
 
-				  <button class="btn btn-info" 
-                                          onclick="location.href='${filterFieldsUrl}'">Detalles</button>
-				  <button class="btn btn-primary" 
-                                          onclick="location.href='${updateFilterFieldsUrl}'">Actualizar</button>
+				  <button class="btn btn-primary" onclick="location.href='${updateUrl}'">Actualizar</button>
+				  <button class="btn btn-primary" onclick="location.href='${deleteUrl}'">Eliminar</button>
 			    </tr>
 			</c:forEach>
 		</table>

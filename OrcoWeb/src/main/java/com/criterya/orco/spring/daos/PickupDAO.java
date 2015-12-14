@@ -1,4 +1,4 @@
-package com.criterya.orco.daos;
+package com.criterya.orco.spring.daos;
 
 // Generated 07-sep-2015 0:05:09 by Hibernate Tools 3.4.0.CR1
 

@@ -1,15 +1,12 @@
-package com.criterya.orco.daos;
+package com.criterya.orco.spring.daos;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
 public abstract class AbstractDao {
     //~ Instance fields ----------------------------------------------------------------------------
 
     @Autowired
-    @Qualifier("orcoSessionFactory")
 	protected SessionFactory sessionFactory;
 
     //~ Methods ------------------------------------------------------------------------------------
@@ -37,8 +34,8 @@ public abstract class AbstractDao {
     /**
      * @param reportCenterSessionFactory the reportCenterSessionFactory to set
      */
-    public void setReportCenterSessionFactory(SessionFactory reportCenterSessionFactory) {
-        this.sessionFactory = reportCenterSessionFactory;
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
     /**
      * @return

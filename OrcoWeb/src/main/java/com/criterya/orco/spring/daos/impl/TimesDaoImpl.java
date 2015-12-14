@@ -1,4 +1,4 @@
-package com.criterya.orco.daos.impl;
+package com.criterya.orco.spring.daos.impl;
 
 // Generated 07-sep-2015 0:05:09 by Hibernate Tools 3.4.0.CR1
 
@@ -8,15 +8,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.criterya.orco.daos.AbstractDao;
-import com.criterya.orco.daos.TimesDao;
 import com.criterya.orco.model.Times;
+import com.criterya.orco.spring.daos.AbstractDao;
+import com.criterya.orco.spring.daos.TimesDao;
 
-@Transactional("orcoTransactionManager")
-@Service("timesDao")
+@Transactional("transactionManager")
 public class TimesDaoImpl extends AbstractDao implements TimesDao{
 
 	private static final Log log = LogFactory.getLog(TimesDaoImpl.class);
@@ -25,9 +23,10 @@ public class TimesDaoImpl extends AbstractDao implements TimesDao{
 	/* (non-Javadoc)
 	 * @see com.criterya.orco.daos.impl.TimesDao#getAlltimes()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Times> getAlltimes(){
-		return null;
+		return sessionFactory.getCurrentSession().createCriteria(Times.class).list();
 	}
 
 	public void persist(Times transientInstance) {
@@ -117,5 +116,10 @@ public class TimesDaoImpl extends AbstractDao implements TimesDao{
 			log.error("find by example failed", re);
 			throw re;
 		}
+	}
+
+	@Override
+	public Times getTime(Integer id) {
+		return (Times) getSession().get(Times.class, id);
 	}
 }

@@ -1,4 +1,4 @@
-package com.criterya.orco.controller;
+package com.criterya.orco.spring.controller;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.criterya.orco.model.Times;
-import com.criterya.orco.services.TimesService;
+import com.criterya.orco.spring.services.TimesService;
 
 @Controller
 public class TimesController {
@@ -25,14 +25,17 @@ public class TimesController {
 	
 	@RequestMapping(value="/times", method = RequestMethod.GET)
 	public ModelAndView listing() {
-		return new ModelAndView("times/list");
-	}
-	
-	@RequestMapping(value = "/times/{id}", method = RequestMethod.GET)
-	public ModelAndView showTime(@PathVariable("id") String id) {
 		List<Times> list = timesService.getAllTimes();
 		ModelAndView salida = new ModelAndView("times/list");
 		salida.addObject("times", list);
+		return salida;
+	}
+	
+	@RequestMapping(value = "/times/{id}/update", method = RequestMethod.GET)
+	public ModelAndView showTime(@PathVariable("id") Integer id) {
+		Times time = timesService.getTime(id);
+		ModelAndView salida = new ModelAndView("times/form");
+		salida.addObject("time", time);
 		return salida;
 	}
 
