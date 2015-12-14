@@ -35,4 +35,15 @@ public class TimesServiceImpl implements TimesService {
 		return timesDao.getTime(id);
 	}
 
+	@Override
+	public Long saveOrUpdate(Times time) {
+		return timesDao.saveOrUpdate(time);
+	}
+
+	@Override
+	public void delete(Times time) {
+		timesDao.delete(time);
+		
+	}
+
 }

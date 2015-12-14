@@ -122,4 +122,9 @@ public class TimesDaoImpl extends AbstractDao implements TimesDao{
 	public Times getTime(Integer id) {
 		return (Times) getSession().get(Times.class, id);
 	}
+
+	@Override
+	public Long saveOrUpdate(Times time) {
+		return (Long) getSession().save(time);
+	}
 }

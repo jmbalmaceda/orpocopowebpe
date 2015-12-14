@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,12 +32,16 @@ public class TimesController {
 		return salida;
 	}
 	
-	@RequestMapping(value = "/times/{id}/update", method = RequestMethod.GET)
-	public ModelAndView showTime(@PathVariable("id") Integer id) {
-		Times time = timesService.getTime(id);
-		ModelAndView salida = new ModelAndView("times/form");
-		salida.addObject("time", time);
-		return salida;
+	@RequestMapping(value = "/times/update", method = RequestMethod.POST)
+	public ModelAndView showTime(@ModelAttribute("time") Times time) {
+		timesService.saveOrUpdate(time);
+		return listing();
+	}
+	
+	@RequestMapping(value = "/times/delete", method = RequestMethod.POST)
+	public ModelAndView deleteTime(@ModelAttribute("time") Times time) {
+		timesService.delete(time);
+		return listing();
 	}
 
 	public TimesService getTimesService() {
