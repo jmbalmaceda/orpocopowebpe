@@ -38,10 +38,11 @@ public class TimesController {
 		return listing();
 	}
 	
-	@RequestMapping(value = "/times/delete", method = RequestMethod.POST)
-	public ModelAndView deleteTime(@ModelAttribute("time") Times time) {
+	@RequestMapping(value = "/times/{id}/delete", method = RequestMethod.GET)
+	public String deleteTime(@PathVariable("id") Integer id) {
+		Times time = timesService.getTime(id);
 		timesService.delete(time);
-		return listing();
+		return "redirect:/times.htm";
 	}
 
 	public TimesService getTimesService() {
