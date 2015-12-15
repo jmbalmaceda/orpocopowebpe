@@ -1,10 +1,18 @@
 package com.criterya.orco.spring.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +32,14 @@ public class TimesController {
 	public TimesController() {
 	}
 	
+	@InitBinder
+  	protected void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
+	            dateFormat, false));
+  		//binder.setValidator(elementFormValidator);
+  	}
+	
 	@RequestMapping(value="/times", method = RequestMethod.GET)
 	public ModelAndView listing() {
 		List<Times> list = timesService.getAllTimes();
@@ -32,10 +48,17 @@ public class TimesController {
 		return salida;
 	}
 	
+	@RequestMapping(value = "/times/{id}/show", method = RequestMethod.GET)
+	public String showTime(@PathVariable("id") Integer id, Model model) {
+		Times time = timesService.getTime(id);
+		model.addAttribute("time", time);
+		return "/times/form";
+	}
+	
 	@RequestMapping(value = "/times/update", method = RequestMethod.POST)
-	public ModelAndView showTime(@ModelAttribute("time") Times time) {
+	public String updateTime(@Validated @ModelAttribute("time") Times time, BindingResult result, Model model) {
 		timesService.saveOrUpdate(time);
-		return listing();
+		return "redirect:/times.htm";
 	}
 	
 	@RequestMapping(value = "/times/{id}/delete", method = RequestMethod.GET)

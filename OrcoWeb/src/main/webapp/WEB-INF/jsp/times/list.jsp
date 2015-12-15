@@ -49,9 +49,9 @@
 					<td>${time.finish}</td>
 					<td>
 						<spring:url value="/times/${time.id}/delete.htm" var="deleteUrl" /> 
-						<spring:url value="/times/${time.id}/update.htm" var="updateUrl" /> 
+						<spring:url value="/times/${time.id}/show.htm" var="updateUrl" /> 
 							<button class="btn btn-primary"
-								onclick="#formDelete.submit()">Actualizar</button>
+								onclick="location.href='${updateUrl}'">Actualizar</button>
 							<button class="btn btn-primary"
 								onclick="location.href='${deleteUrl}'">Eliminar</button>
 				</tr>

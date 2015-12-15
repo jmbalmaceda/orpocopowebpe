@@ -36,7 +36,7 @@ public class TimesServiceImpl implements TimesService {
 	}
 
 	@Override
-	public Long saveOrUpdate(Times time) {
+	public Integer saveOrUpdate(Times time) {
 		return timesDao.saveOrUpdate(time);
 	}
 

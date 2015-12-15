@@ -28,20 +28,42 @@
 	</c:choose>
 	<br />
 
-	<spring:url value="/times/save.htm" var="timeActionUrl" />
+	<spring:url value="/times/update.htm" var="timeActionUrl" />
 
 	<form:form class="form-horizontal" method="post" 
                 modelAttribute="time" action="${timeActionUrl}">
 
 		<form:hidden path="id" />
 
+		<spring:bind path="weekDay">
+		  <div class="form-group ${status.error ? 'has-error' : ''}">
+			<label class="col-sm-2 control-label">Día de la semana</label>
+			<div class="col-sm-10">
+				<form:input path="weekDay" type="text" class="form-control" 
+                                id="stweekDayart" placeholder="Día" />
+				<form:errors path="weekDay" class="control-label" />
+			</div>
+		  </div>
+		</spring:bind>
+
 		<spring:bind path="start">
 		  <div class="form-group ${status.error ? 'has-error' : ''}">
 			<label class="col-sm-2 control-label">Comienzo</label>
 			<div class="col-sm-10">
-				<form:input path="start" type="text" class="form-control" 
+				<form:input path="start" type="time" class="form-control" 
                                 id="start" placeholder="Comienzo" />
 				<form:errors path="start" class="control-label" />
+			</div>
+		  </div>
+		</spring:bind>
+		
+		<spring:bind path="finish">
+		  <div class="form-group ${status.error ? 'has-error' : ''}">
+			<label class="col-sm-2 control-label">Fin</label>
+			<div class="col-sm-10">
+				<form:input path="finish" type="time" class="form-control" 
+                                id="finish" placeholder="Fin" />
+				<form:errors path="finish" class="control-label" />
 			</div>
 		  </div>
 		</spring:bind>
