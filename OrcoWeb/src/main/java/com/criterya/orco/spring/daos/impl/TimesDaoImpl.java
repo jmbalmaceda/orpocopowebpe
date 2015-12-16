@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.criterya.orco.model.Times;
@@ -26,7 +27,7 @@ public class TimesDaoImpl extends AbstractDao implements TimesDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Times> getAlltimes(){
-		return sessionFactory.getCurrentSession().createCriteria(Times.class).list();
+		return sessionFactory.getCurrentSession().createCriteria(Times.class).addOrder(Order.asc("weekDay")).addOrder(Order.asc("start")).list();
 	}
 
 	public void persist(Times transientInstance) {

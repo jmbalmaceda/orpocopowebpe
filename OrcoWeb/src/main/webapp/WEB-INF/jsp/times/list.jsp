@@ -20,7 +20,10 @@
 <body>
 	<jsp:include page="../fragments/header.jsp" />
 	<!-- jsp:include page="../fragments/headerelement.jsp" /-->
-
+	<button style="float: right;" onClick="location.href='${pageContext.request.contextPath}/times/add.htm'" type="button" class="btn btn-primary">
+	<span>Agregar Horario</span>
+    </button>
+	
 	<div class="container">
 		<c:if test="${not empty msg}">
 			<div class="alert alert-${css} alert-dismissible" role="alert">
@@ -31,20 +34,20 @@
 				<strong>${msg}</strong>
 			</div>
 		</c:if>
-		<h3>Horarios de Análisis</h3>
+		<h3>Horarios de An&aacute;lisis</h3>
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Día de la semana</th>
+					<th>D&iacute;a de la semana</th>
 					<th>Comienzo</th>
 					<th>Fin</th>
-					<th>Acción</th>
+					<th>Acci&oacute;n</th>
 				</tr>
 			</thead>
 
 			<c:forEach var="time" items="${times}">
 				<tr>
-					<td>${time.weekDay}</td>
+					<td>${days[time.weekDay]}</td>
 					<td>${time.start}</td>
 					<td>${time.finish}</td>
 					<td>

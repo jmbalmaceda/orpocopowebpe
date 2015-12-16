@@ -1,6 +1,8 @@
 package com.criterya.orco.spring.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -45,12 +47,30 @@ public class TimesController {
 		List<Times> list = timesService.getAllTimes();
 		ModelAndView salida = new ModelAndView("times/list");
 		salida.addObject("times", list);
+		List<String> days = new ArrayList<>();
+		days.add("Domingo");
+		days.add("Lunes");
+		days.add("Martes");
+		days.add("Mi&eacute;rcoles");
+		days.add("Jueves");
+		days.add("Viernes");
+		days.add("S&aacute;bado");
+		salida.addObject("days", days);
 		return salida;
 	}
 	
 	@RequestMapping(value = "/times/{id}/show", method = RequestMethod.GET)
 	public String showTime(@PathVariable("id") Integer id, Model model) {
 		Times time = timesService.getTime(id);
+		model.addAttribute("time", time);
+		return "/times/form";
+	}
+	
+	@RequestMapping(value = "/times/add", method = RequestMethod.GET)
+	public String addTime(Model model) {
+		Times time = new Times();
+		time.setStart(Calendar.getInstance().getTime());
+		time.setFinish(Calendar.getInstance().getTime());
 		model.addAttribute("time", time);
 		return "/times/form";
 	}

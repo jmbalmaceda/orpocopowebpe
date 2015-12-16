@@ -39,9 +39,20 @@
 		  <div class="form-group ${status.error ? 'has-error' : ''}">
 			<label class="col-sm-2 control-label">Día de la semana</label>
 			<div class="col-sm-10">
+				<form:select path="weekDay" class="form-control">
+					<form:option value="0" label="Domingo"/>
+					<form:option value="1" label="Lunes"/>
+					<form:option value="2" label="Martes"/>
+					<form:option value="3" label="Miércoles"/>
+					<form:option value="4" label="Jueves"/>
+					<form:option value="5" label="Viernes"/>
+					<form:option value="6" label="Sábado"/>
+   				</form:select>
+				<!-- 
 				<form:input path="weekDay" type="text" class="form-control" 
                                 id="stweekDayart" placeholder="Día" />
 				<form:errors path="weekDay" class="control-label" />
+				-->
 			</div>
 		  </div>
 		</spring:bind>
