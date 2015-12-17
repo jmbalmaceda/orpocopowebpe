@@ -15,9 +15,12 @@
 </head>
 
 <body>
+	<jsp:useBean id="timesDao" beanName="timesDao" class="com.criterya.orco.spring.daos.impl.TimesDaoImpl" />
+	${timesDao}
 	<jsp:include page="../fragments/header.jsp" />
 	<jsp:include page="../fragments/headerelement.jsp" />
 	<div class="container">
+	
 	<c:choose>
 		<c:when test="${elementForm['new']}">
 			<h3>Agregar Elemento</h3>
