@@ -1,5 +1,3 @@
-<spring:url value="/index.htm" var="urlHome" />
-
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -8,45 +6,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand">Orco Web</a>
+      <a class="navbar-brand" href="${pageContext.request.contextPath}/index.htm">Orco Web</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="${pageContext.request.contextPath}/index.htm">Home</a></li>
-        <li class="dropdown-toggle"><a href="${pageContext.request.contextPath}/index.htm">Actividades</a></li>
-        <li class="dropdown-toggle"><a href="${pageContext.request.contextPath}/index.htm">Horarios</a></li>
-        
-        <!-- 
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Horarios<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="${pageContext.request.contextPath}/filterFields.htm">Actividades</a></li>
-            <li><a href="${pageContext.request.contextPath}/filterFields/add.htm">Registros</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Templates <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="${pageContext.request.contextPath}/template.htm">Listar</a></li>
-            <li><a href="${pageContext.request.contextPath}/template/add.htm">Agregar</a></li>
-            <li><a href="${pageContext.request.contextPath}/customizeTemplate.htm">Customizar</a></li>
-            <li><a href="${pageContext.request.contextPath}/templateValidator.htm">Validar</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Ticket <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="${pageContext.request.contextPath}/selectTicket.htm">Buscar</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Mensajes CMM <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Listar</a></li>
-            <li><a href="#">Agregar</a></li>
-          </ul>
-        </li>
-         -->
+        <li class="dropdown-toggle"><a href="${pageContext.request.contextPath}/activities.htm">Actividades</a></li>
+        <li class="dropdown-toggle"><a href="${pageContext.request.contextPath}/times.htm">Horarios</a></li>
       </ul>
     </div>
   </div>

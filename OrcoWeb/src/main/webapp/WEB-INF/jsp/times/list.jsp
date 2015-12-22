@@ -23,9 +23,6 @@
 	<button style="float: right;" onClick="location.href='${pageContext.request.contextPath}/times/add.htm'" type="button" class="btn btn-primary">
 	<span>Agregar Horario</span>
     </button>
-    
-    <jsp:useBean id="timesDao" class="com.criterya.orco.spring.daos.impl.TimesDaoImpl" />
-	${timesDao.time(6)}
 	
 	<div class="container">
 		<c:if test="${not empty msg}">
@@ -58,7 +55,7 @@
 						<spring:url value="/times/${time.id}/show.htm" var="updateUrl" /> 
 							<button class="btn btn-primary"
 								onclick="location.href='${updateUrl}'">Actualizar</button>
-							<button class="btn btn-primary"
+							<button class="btn btn-danger"
 								onclick="location.href='${deleteUrl}'">Eliminar</button>
 				</tr>
 			</c:forEach>

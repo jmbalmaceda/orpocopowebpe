@@ -1,7 +1,6 @@
-package com.criterya.orco.spring.daos;
+package com.criterya.orco.spring.daos.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -11,34 +10,29 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.criterya.orco.beans.GetRecorridosResponse;
-import com.criterya.orco.commons.DBCommons;
 import com.criterya.orco.commons.RecorridoConstants;
 import com.criterya.orco.commons.RecorridoPersonaCommons;
 import com.criterya.orco.model.Pickup;
 import com.criterya.orco.model.RecorridoPersona;
+import com.criterya.orco.spring.daos.AbstractDao;
+import com.criterya.orco.spring.daos.RecorridoPersonaDao;
 
-public class RecorridoPersonaDAO {
-	private static RecorridoPersonaDAO instance;
-
-	public static RecorridoPersonaDAO getInstance() {
-		if (null == instance) {
-			instance = new RecorridoPersonaDAO();
-		}
-		return instance;
-	}
-
+@Transactional("transactionManager")
+public class RecorridoPersonaDaoImpl extends AbstractDao implements RecorridoPersonaDao {
+	/* (non-Javadoc)
+	 * @see com.criterya.orco.spring.daos.impl.RecorridoPersonaDao#getRecorridos(java.util.Date, java.util.Date)
+	 */
+	@Override
 	public GetRecorridosResponse getRecorridos(Date inicio, Date fin){
 		GetRecorridosResponse salida = new GetRecorridosResponse();
 		List<RecorridoPersona> recorridos = new ArrayList<RecorridoPersona>();
-		Session s = DBCommons.getSessionFactory().getCurrentSession();
-		Transaction t = s.beginTransaction();
+		Session s = getSession();
 		@SuppressWarnings("unchecked")
 		List<Pickup> l = s.createCriteria(Pickup.class).add(Restrictions.between("currentTime", inicio, fin)).add(Restrictions.or(Restrictions.isNull("blobHandId"),Restrictions.not(Restrictions.eqProperty("blobId", "blobHandId")))).list();
-		t.commit();
 
 		// Agrupo por blobId
 		HashMap<Integer, ArrayList<Pickup>> blob_arrayPickup = new HashMap<>();
@@ -92,15 +86,4 @@ public class RecorridoPersonaDAO {
 		return salida;
 	}
 
-	public static void main(String[] args) {
-		RecorridoPersonaDAO dao = new RecorridoPersonaDAO();
-		Calendar c1 = Calendar.getInstance();
-		c1.set(2015, 06, 30);
-		Date inicio = c1.getTime();
-		Calendar c2 = Calendar.getInstance();
-		c2.set(2015, 06, 31);
-		Date fin = c2.getTime();
-		Object l = dao.getRecorridos(inicio, fin);
-		System.out.println(l);
-	}
 }

@@ -2,18 +2,11 @@ package com.criterya.orco.spring.daos;
 
 // Generated 07-sep-2015 0:05:09 by Hibernate Tools 3.4.0.CR1
 
-import java.util.List;
-
-import javax.naming.InitialContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Example;
 
 import com.criterya.orco.commons.DBCommons;
 import com.criterya.orco.model.Pickup;

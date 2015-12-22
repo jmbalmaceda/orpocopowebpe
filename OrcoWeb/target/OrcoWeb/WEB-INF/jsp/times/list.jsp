@@ -7,56 +7,57 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 
 <body>
 	<jsp:include page="../fragments/header.jsp" />
-	<jsp:include page="../fragments/headerelement.jsp" />
+	<!-- jsp:include page="../fragments/headerelement.jsp" /-->
+	<button style="float: right;" onClick="location.href='${pageContext.request.contextPath}/times/add.htm'" type="button" class="btn btn-primary">
+	<span>Agregar Horario</span>
+    </button>
 	
 	<div class="container">
 		<c:if test="${not empty msg}">
-		    <div class="alert alert-${css} alert-dismissible" role="alert">
-			<button type="button" class="close" data-dismiss="alert" 
-                                aria-label="Close">
-				<span aria-hidden="true">×</span>
-			</button>
-			<strong>${msg}</strong>
-		    </div>
+			<div class="alert alert-${css} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<strong>${msg}</strong>
+			</div>
 		</c:if>
-		<h3>Todos los Elementos</h3>
+		<h3>Horarios de An&aacute;lisis</h3>
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Nombre del Elemento</th>
-					<th>Descripcion</th>
-					<th>Resumen (ambito y error)</th>
-					<th>Accion</th>
+					<th>D&iacute;a de la semana</th>
+					<th>Comienzo</th>
+					<th>Fin</th>
+					<th>Acci&oacute;n</th>
 				</tr>
 			</thead>
 
-			<c:forEach var="filter" items="${filterFields}">
-			    <tr>
-				<td>
-					${filter.elementName}
-				</td>
-				<td>
-					${filter.description}
-				</td>
-				<td>${filter.summary}</td>
-				<td>
-				  <spring:url value="/filterFields/${filter.elementId}.htm" var="filterFieldsUrl" />
-				  <spring:url value="/filterFields/${filter.elementId}/update.htm" var="updateFilterFieldsUrl" />
-
-				  <button class="btn btn-info" 
-                                          onclick="location.href='${filterFieldsUrl}'">Detalles</button>
-				  <button class="btn btn-primary" 
-                                          onclick="location.href='${updateFilterFieldsUrl}'">Actualizar</button>
-			    </tr>
+			<c:forEach var="time" items="${times}">
+				<tr>
+					<td>${days[time.weekDay]}</td>
+					<td>${time.start}</td>
+					<td>${time.finish}</td>
+					<td>
+						<spring:url value="/times/${time.id}/delete.htm" var="deleteUrl" /> 
+						<spring:url value="/times/${time.id}/show.htm" var="updateUrl" /> 
+							<button class="btn btn-primary"
+								onclick="location.href='${updateUrl}'">Actualizar</button>
+							<button class="btn btn-primary"
+								onclick="location.href='${deleteUrl}'">Eliminar</button>
+				</tr>
 			</c:forEach>
 		</table>
 

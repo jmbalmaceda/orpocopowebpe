@@ -53,5 +53,14 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="recorridoPersonaDao" class="com.criterya.orco.spring.daos.impl.RecorridoPersonaDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!-- END: DAOS -->
+	
+	<!-- UTILS -->
+	<bean id="chartUtils" class="com.criterya.orco.utils.ChartUtils">
+		<property name="recorridoPersonaDao" ref="recorridoPersonaDao" />
+	</bean>
+	<!-- END: UTILS -->
 </beans>
