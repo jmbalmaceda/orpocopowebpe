@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.criterya.orco.spring.services.TimesService;
-import com.criterya.orco.utils.ChartUtils;
+import com.criterya.orco.spring.utils.ChartUtils;
 import com.keypoint.PngEncoder;
 
 @Controller

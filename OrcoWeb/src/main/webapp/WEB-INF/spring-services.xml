@@ -31,7 +31,8 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.default_schema">orcodb</prop>
+                <prop key="hibernate.default_schema">matelec_1</prop>
+                <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
     </bean>
@@ -59,7 +60,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	<!-- END: DAOS -->
 	
 	<!-- UTILS -->
-	<bean id="chartUtils" class="com.criterya.orco.utils.ChartUtils">
+	<bean id="chartUtils" class="com.criterya.orco.spring.utils.ChartUtils">
 		<property name="recorridoPersonaDao" ref="recorridoPersonaDao" />
 	</bean>
 	<!-- END: UTILS -->
