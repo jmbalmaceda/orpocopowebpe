@@ -18,7 +18,6 @@ import com.criterya.orco.commons.RecorridoConstants;
 import com.criterya.orco.commons.RecorridoPersonaCommons;
 import com.criterya.orco.model.Pickup;
 import com.criterya.orco.model.RecorridoPersona;
-import com.criterya.orco.spring.daos.AbstractDao;
 import com.criterya.orco.spring.daos.RecorridoPersonaDao;
 
 @Transactional("transactionManager")

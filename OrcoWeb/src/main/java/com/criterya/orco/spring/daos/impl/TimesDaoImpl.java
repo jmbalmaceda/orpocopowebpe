@@ -12,7 +12,6 @@ import org.hibernate.criterion.Order;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.criterya.orco.model.Times;
-import com.criterya.orco.spring.daos.AbstractDao;
 import com.criterya.orco.spring.daos.TimesDao;
 
 @Transactional("transactionManager")

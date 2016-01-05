@@ -1,4 +1,4 @@
-package com.criterya.orco.spring.daos;
+package com.criterya.orco.spring.daos.impl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

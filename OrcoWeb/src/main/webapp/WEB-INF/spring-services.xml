@@ -15,6 +15,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	<!-- import resource="classpath:/daos-configuration.xml"/-->
 	<!--import resource="classpath:/services-configuration.xml"/-->
 	<tx:annotation-driven/>
+	<context:component-scan base-package="com.criterya.orco.spring" />
 	
 	<!-- Configuración de base de datos usando JDBC -->
 	<bean id="orcoDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
@@ -57,11 +58,15 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	<bean id="recorridoPersonaDao" class="com.criterya.orco.spring.daos.impl.RecorridoPersonaDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="utilsDao" class="com.criterya.orco.spring.daos.impl.UtilsDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!-- END: DAOS -->
 	
-	<!-- UTILS -->
+	<!-- UTILS 
 	<bean id="chartUtils" class="com.criterya.orco.spring.utils.ChartUtils">
 		<property name="recorridoPersonaDao" ref="recorridoPersonaDao" />
 	</bean>
-	<!-- END: UTILS -->
+	 END: UTILS -->
 </beans>
