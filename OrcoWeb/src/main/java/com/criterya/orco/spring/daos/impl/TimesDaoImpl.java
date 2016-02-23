@@ -124,7 +124,16 @@ public class TimesDaoImpl extends AbstractDao implements TimesDao{
 	}
 
 	@Override
-	public Integer saveOrUpdate(Times time) {
+	public Integer save(Times time) {
 		return (Integer) getSession().save(time);
+	}
+
+	@Override
+	public void update(Times time) {
+		Times t = (Times) getSession().get(Times.class, time.getId());
+		t.setFinish(time.getFinish());
+		t.setStart(time.getStart());
+		t.setWeekDay(time.getWeekDay());
+		getSession().update(t);
 	}
 }

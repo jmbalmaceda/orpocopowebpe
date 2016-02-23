@@ -10,7 +10,9 @@ public interface TimesDao {
 
 	public Times getTime(Integer id);
 
-	public Integer saveOrUpdate(Times time);
+	public Integer save(Times time);
+	
+	public void update(Times time);
 
 	public void delete(Times time);
 

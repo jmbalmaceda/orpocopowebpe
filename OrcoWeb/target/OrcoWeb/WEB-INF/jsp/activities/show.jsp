@@ -26,6 +26,7 @@
 		<div class="panel-body">
 			<spring:url value="/activities/updateTimes.htm" var="updateTimeUrl" />
 			<form:form class="form-horizontal" method="post" modelAttribute="dashboardFilter" action="${updateTimeUrl}">
+				${dashboardFilter.start} ${dashboardFilter.finish}
 				<spring:bind path="start">
 				  <div class="form-group ">
 					<label class="col-sm-2 control-label">Comienzo</label>
@@ -101,7 +102,7 @@
 			<h3>Visitantes Promedio Horario</h3>			
 		</div>
 		<div class="panel-body">
-			<img alt="" src="${pageContext.request.contextPath}/getPromedioVisitantesHora.htm?start=${startParam} }&finish=${finishParam}" />
+			<img alt="" src="${pageContext.request.contextPath}/getPromedioVisitantesDiario.htm?start=${startParam} }&finish=${finishParam}" />
 		</div>
 		<div class="panel-footer">
 			footer
@@ -114,7 +115,7 @@
 			<h3>Visitas Por Dia</h3>			
 		</div>
 		<div class="panel-body">
-			<img alt="" src="${pageContext.request.contextPath}/getPromedioVisitantesDiario.htm?start=${startParam} }&finish=${finishParam}" />
+			body
 		</div>
 		<div class="panel-footer">
 			footer

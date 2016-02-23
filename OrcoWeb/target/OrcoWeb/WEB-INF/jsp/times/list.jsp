@@ -55,7 +55,7 @@
 						<spring:url value="/times/${time.id}/show.htm" var="updateUrl" /> 
 							<button class="btn btn-primary"
 								onclick="location.href='${updateUrl}'">Actualizar</button>
-							<button class="btn btn-primary"
+							<button class="btn btn-danger"
 								onclick="location.href='${deleteUrl}'">Eliminar</button>
 				</tr>
 			</c:forEach>

@@ -13,11 +13,14 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.StatisticalBarRenderer;
 import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 import org.jfree.data.time.Day;
+import org.jfree.data.time.Hour;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import com.criterya.orco.beans.PromedioYDesviacion;
 import com.criterya.orco.spring.daos.RecorridoPersonaDao;
 import com.criterya.orco.spring.services.UtilsService;
 
@@ -34,6 +38,8 @@ public class ChartUtils {
 	private RecorridoPersonaDao recorridoPersonaDao;
 	@Autowired
 	private UtilsService utilsService;
+	
+	static String[] diasSemana = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
 	
 	public RecorridoPersonaDao getRecorridoPersonaDao() {
 		return recorridoPersonaDao;
@@ -75,7 +81,7 @@ public class ChartUtils {
 	}
 
 	
-	public JFreeChart dataset_PromedioVisitantesSemana(Date inicio, Date fin){
+	public JFreeChart dataset_CantidadVisitantesDiario(Date inicio, Date fin){
 		Map<Date, Long> map = utilsService.getPersonasPeriodo(inicio, fin);
 		TimeSeries pop = new TimeSeries("Population", Day.class);
 		Iterator<Date> itKey = map.keySet().iterator();
@@ -97,18 +103,62 @@ public class ChartUtils {
 		return chart;
 	}
 	
-	public JFreeChart dataset_PromedioVisitantesDia(Date inicio, Date fin){
-		Map<Date, Long> map = utilsService.getPersonasPeriodo(inicio, fin);
-		Iterator<Date> itKey = map.keySet().iterator();
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	public JFreeChart dataset_CantidadVisitantesHora(Date inicio, Date fin){
+		//StatisticalLineAndShapeRenderer chart = new StatisticalLineAndShapeRenderer();
+		
+		Map<Integer, Long> map = utilsService.getPersonasHora(inicio, fin);
+		TimeSeries pop = new TimeSeries("Promedio visitantes por hora", Integer.class);
+		Iterator<Integer> itKey = map.keySet().iterator();
 		while (itKey.hasNext()) {
-			Date periodo = (Date) itKey.next();
-			dataset.addValue(map.get(periodo), "Cantidad Personas", periodo);
+			Integer hora = (Integer) itKey.next();
+			pop.addOrUpdate(new Hour(hora, new Day()), map.get(hora));
 		}
+				
+		TimeSeriesCollection dataset = new TimeSeriesCollection();
+		dataset.addSeries(pop);
+		JFreeChart chart = ChartFactory.createTimeSeriesChart(
+				"Population of CSC408 Town",
+				"Hora",
+				"Population",
+				dataset,
+				true,
+				true,
+				false);
+		return chart;
+	}
+	
+	public JFreeChart dataset_PromedioVisitantesDia(Date inicio, Date fin){
+		Map<Integer, PromedioYDesviacion> map = utilsService.getPersonasSemana(inicio, fin);
+		//DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		DefaultStatisticalCategoryDataset dataset = new DefaultStatisticalCategoryDataset();
+
+		for (int i=0; i<7; i++){
+			Number cant = 0L;
+			Number std = 0L;
+			if (map.containsKey(i)){
+				cant = map.get(i).promedio;
+				std = map.get(i).desviacion;
+			}
+			dataset.add((Number)cant, std, "Promedio Visitantes", diasSemana[i]);
+		}
+		//*
 		
-		JFreeChart chart = ChartFactory.createBarChart("Titulo", "asd", "dsa", dataset, PlotOrientation.VERTICAL, true, true, false);
+		CategoryPlot plot = new CategoryPlot(
+                dataset,
+                new CategoryAxis("Día de la Semana"),
+                new NumberAxis(),
+                new StatisticalBarRenderer());
+          plot.setOrientation(PlotOrientation.VERTICAL);
+          plot.setBackgroundPaint(Color.lightGray);
+
+          JFreeChart chart = new JFreeChart("",JFreeChart.DEFAULT_TITLE_FONT,plot,true);
+
+          chart.setBackgroundPaint(Color.white);
+		
+		/*/
+		JFreeChart chart = ChartFactory.createBarChart("Promedio por día de semana", "", "", dataset, PlotOrientation.VERTICAL, true, true, false);
 		chart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(120d));
-		
+		//*/
 		return chart;
 	}
 

@@ -26,6 +26,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,8 +37,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.criterya.orco.spring.dto.DashboardFilter;
 import com.criterya.orco.spring.services.TimesService;
 import com.criterya.orco.spring.utils.ChartUtils;
 import com.keypoint.PngEncoder;
@@ -61,7 +64,7 @@ public class ActivitiesController {
 
 	@InitBinder
   	protected void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
 	            dateFormat, false));
   		//binder.setValidator(elementFormValidator);
@@ -70,31 +73,118 @@ public class ActivitiesController {
 	
 	@RequestMapping(value="/activities", method = RequestMethod.GET)
 	public String show(Model model) {
-		Calendar c1 = Calendar.getInstance();
-		Calendar c2 = Calendar.getInstance();
-		c1.set(2015, 7, 30);
-		c2.set(2015, 9, 30);
-		model.addAttribute("inicio", c1.getTime());
-		model.addAttribute("fin", c2.getTime());
+		if (inicio==null || fin ==null){
+			Calendar c1 = Calendar.getInstance();
+			Calendar c2 = Calendar.getInstance();
+			c1.set(2015, 7, 30);
+			c2.set(2015, 9, 30);
+			inicio = c1.getTime();
+			fin = c2.getTime();
+		}
+		DashboardFilter filter = new DashboardFilter();
+		filter.setStart(inicio);
+		filter.setFinish(fin);
+		model.addAttribute("dashboardFilter", filter);
+		Calendar calInicio = Calendar.getInstance();
+		calInicio.setTime(inicio);
+		String startParam = calInicio.get(Calendar.YEAR)+"-"+(1+calInicio.get(Calendar.MONTH))+"-"+calInicio.get(Calendar.DAY_OF_MONTH);
+		Calendar calFin = Calendar.getInstance();
+		calFin.setTime(fin);
+		String finishParam = calFin.get(Calendar.YEAR)+"-"+(1+calFin.get(Calendar.MONTH))+"-"+calFin.get(Calendar.DAY_OF_MONTH);
+		model.addAttribute("startParam", startParam);
+		model.addAttribute("finishParam", finishParam);
 		return "activities/show";
 	}
 	
-	@RequestMapping(value = "/updateTimes", method = RequestMethod.POST)
-	public String updateTime(@ModelAttribute("inicio") Date inicio, BindingResult result1, @ModelAttribute("fin") Date fin, BindingResult result2) {
-		this.inicio = inicio;
-		this.fin = fin;
-		return "redirect:/times.htm";
+	@RequestMapping(value = "activities/updateTimes", method = RequestMethod.POST)
+	public String updateTime(@ModelAttribute("dashboardFilter") DashboardFilter filter, BindingResult result1) {
+		this.inicio = filter.getStart();
+		this.fin = filter.getFinish();
+		return "redirect:/activities.htm";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getPromedioVisitantesDiaSemana", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getPromedioVisitantesDiaSemana(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd") Date finish)
+	{
+		JFreeChart chart = chartUtils.dataset_PromedioVisitantesDia(start, finish);
+		chart.setBackgroundPaint(Color.white);
+
+		final CategoryPlot plot = chart.getCategoryPlot();
+		plot.setForegroundAlpha(0.5f);
+
+		plot.setBackgroundPaint(Color.lightGray);
+		plot.setDomainGridlinesVisible(true);
+		plot.setDomainGridlinePaint(Color.white);
+		plot.setRangeGridlinesVisible(true);
+		plot.setRangeGridlinePaint(Color.white);
+
+		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+
+		rangeAxis.setLabelAngle(1 * Math.PI / 2.0);
+
+		ChartRenderingInfo info = null;
+
+		info = new ChartRenderingInfo(new StandardEntityCollection());
+		//response.setContentType("image/png");
+		BufferedImage chartImage = chart.createBufferedImage(700, 400, info);
+
+		PngEncoder encoder = new PngEncoder(chartImage, false, 0, 9);
+
+		//response.getOutputStream().write(encoder.pngEncode());
+		
+		return ResponseEntity.ok()
+	            //.contentLength(gridFsFile.getLength())
+	            .contentType(MediaType.IMAGE_PNG)
+	            .body(encoder.pngEncode());
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getPromedioVisitantesDiario", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> getPromedioVisitantesDiario()
+	public ResponseEntity<byte[]> getPromedioVisitantesDiario(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd") Date finish)
 	{
-		Calendar c1 = Calendar.getInstance();
-		c1.set(2015, 7, 1);
-		Calendar c2 = Calendar.getInstance();
-		c2.set(2015, 8, 1);
-		JFreeChart chart = chartUtils.dataset_PromedioVisitantesSemana(c1.getTime(), c2.getTime());
+		JFreeChart chart = chartUtils.dataset_CantidadVisitantesDiario(start, finish);
+		chart.setBackgroundPaint(Color.white);
+		final TextTitle subtitle = new TextTitle(
+				" The below Bar Chart shows population growth in Chennai(India), every 5 years from 1985 .");
+		subtitle.setFont(new Font("SansSerif", Font.PLAIN, 12));
+
+		chart.addSubtitle(subtitle);
+
+		final XYPlot plot = chart.getXYPlot();
+		plot.setForegroundAlpha(0.5f);
+
+		plot.setBackgroundPaint(Color.lightGray);
+		plot.setDomainGridlinesVisible(true);
+		plot.setDomainGridlinePaint(Color.white);
+		plot.setRangeGridlinesVisible(true);
+		plot.setRangeGridlinePaint(Color.white);
+
+		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+
+		rangeAxis.setLabelAngle(1 * Math.PI / 2.0);
+
+		ChartRenderingInfo info = null;
+
+		info = new ChartRenderingInfo(new StandardEntityCollection());
+		//response.setContentType("image/png");
+		BufferedImage chartImage = chart.createBufferedImage(700, 400, info);
+
+		PngEncoder encoder = new PngEncoder(chartImage, false, 0, 9);
+
+		//response.getOutputStream().write(encoder.pngEncode());
+		
+		return ResponseEntity.ok()
+	            //.contentLength(gridFsFile.getLength())
+	            .contentType(MediaType.IMAGE_PNG)
+	            .body(encoder.pngEncode());
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getPromedioVisitantesHora", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getPromedioVisitantesHora(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd") Date finish)
+	{
+		JFreeChart chart = chartUtils.dataset_CantidadVisitantesHora(start, finish);
 		chart.setBackgroundPaint(Color.white);
 		final TextTitle subtitle = new TextTitle(
 				" The below Bar Chart shows population growth in Chennai(India), every 5 years from 1985 .");

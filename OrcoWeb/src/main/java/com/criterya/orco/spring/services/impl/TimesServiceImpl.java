@@ -37,7 +37,10 @@ public class TimesServiceImpl implements TimesService {
 
 	@Override
 	public Integer saveOrUpdate(Times time) {
-		return timesDao.saveOrUpdate(time);
+		if (time.getId()==null)		
+			return timesDao.save(time);
+		timesDao.update(time);
+		return time.getId();
 	}
 
 	@Override

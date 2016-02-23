@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.criterya.orco.beans.PromedioYDesviacion;
 import com.criterya.orco.spring.daos.UtilsDao;
 import com.criterya.orco.spring.services.UtilsService;
 
@@ -29,6 +30,16 @@ public class UtilsServiceImpl implements UtilsService {
 
 	public void setUtilsDao(UtilsDao utilsDao) {
 		this.utilsDao = utilsDao;
+	}
+
+	@Override
+	public Map<Integer, PromedioYDesviacion> getPersonasSemana(Date inicio, Date fin) {
+		return utilsDao.getPersonasSemana(inicio,fin);
+	}
+
+	@Override
+	public Map<Integer, Long> getPersonasHora(Date inicio, Date fin) {
+		return utilsDao.getPersonasHora(inicio, fin);
 	}
 
 }
