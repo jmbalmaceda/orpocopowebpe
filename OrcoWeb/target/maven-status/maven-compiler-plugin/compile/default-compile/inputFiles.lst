@@ -1,5 +1,5 @@
-C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\spring\services\impl\TimesServiceImpl.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\spring\daos\UtilsDao.java
+C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\spring\services\impl\TimesServiceImpl.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\spring\utils\ChartUtils.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\spring\daos\impl\UtilsDaoImpl.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\model\Pickup.java
@@ -18,6 +18,7 @@ C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\be
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\commons\RecorridoPersonaCommons.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\spring\dto\DashboardFilter.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\Test.java
+C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\beans\PromedioYDesviacion.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\spring\controller\ActivitiesController.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\spring\controller\TimesController.java
 C:\Users\cito\workspace\orpocopowebpe\OrcoWeb\src\main\java\com\criterya\orco\commons\RecorridoConstants.java

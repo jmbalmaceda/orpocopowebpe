@@ -70,6 +70,8 @@ public class RecorridoPersonaDaoImpl extends AbstractDao implements RecorridoPer
 				rp.setEntrada(bp.get(0).getCurrentTime());
 				rp.setSalida(bp.get(bp.size()-1).getCurrentTime());
 				rp.setPickup(blob_hasPickup.contains(blobId));
+				if (rp.getPickup())
+					salida.addPickup();
 				// Agrego el recorrido de la persona
 				rp.setRecorrido(RecorridoPersonaCommons.getRecorrido(bp));
 				// Analizar el sentido del recorrido

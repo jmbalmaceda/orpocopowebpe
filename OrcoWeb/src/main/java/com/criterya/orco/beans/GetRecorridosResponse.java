@@ -9,6 +9,7 @@ public class GetRecorridosResponse {
 
 	private List<RecorridoPersona> recorridos;
 	private HashMap<String, Integer> cantidadSentidos;
+	private int cantidadPickups;
 
 	public GetRecorridosResponse() {
 		cantidadSentidos = new HashMap<>();
@@ -23,6 +24,10 @@ public class GetRecorridosResponse {
 		cantidadSentidos.put(sentido, value);
 	}
 	
+	public void addPickup(){
+		cantidadPickups++;
+	}
+	
 	public void setRecorridos(List<RecorridoPersona> recorridos) {
 		this.recorridos = recorridos;
 	}
@@ -33,6 +38,10 @@ public class GetRecorridosResponse {
 
 	public HashMap<String, Integer> getCantidadSentidos() {
 		return cantidadSentidos;
+	}
+
+	public int getCantidadPickups() {
+		return cantidadPickups;
 	}
 	
 }

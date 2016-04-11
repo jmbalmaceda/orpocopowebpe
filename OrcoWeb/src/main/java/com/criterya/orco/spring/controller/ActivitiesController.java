@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,8 +41,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.criterya.orco.beans.GetRecorridosResponse;
+import com.criterya.orco.commons.RecorridoConstants;
 import com.criterya.orco.spring.dto.DashboardFilter;
 import com.criterya.orco.spring.services.TimesService;
+import com.criterya.orco.spring.services.UtilsService;
 import com.criterya.orco.spring.utils.ChartUtils;
 import com.keypoint.PngEncoder;
 
@@ -52,6 +56,9 @@ public class ActivitiesController {
 	@Qualifier("timesService")
 	TimesService timesService;
 
+	@Autowired
+	UtilsService utilsService;
+	
 	@Autowired
 	ChartUtils chartUtils;
 
@@ -76,8 +83,8 @@ public class ActivitiesController {
 		if (inicio==null || fin ==null){
 			Calendar c1 = Calendar.getInstance();
 			Calendar c2 = Calendar.getInstance();
-			c1.set(2015, 7, 30);
-			c2.set(2015, 9, 30);
+			c1.set(2015, 7, 10,0,0,0);
+			c2.set(2015, 7, 15,23,59,59);
 			inicio = c1.getTime();
 			fin = c2.getTime();
 		}
@@ -87,12 +94,22 @@ public class ActivitiesController {
 		model.addAttribute("dashboardFilter", filter);
 		Calendar calInicio = Calendar.getInstance();
 		calInicio.setTime(inicio);
-		String startParam = calInicio.get(Calendar.YEAR)+"-"+(1+calInicio.get(Calendar.MONTH))+"-"+calInicio.get(Calendar.DAY_OF_MONTH);
+		String startParam = calInicio.get(Calendar.YEAR)+"-"+(1+calInicio.get(Calendar.MONTH))+"-"+calInicio.get(Calendar.DAY_OF_MONTH)+
+				"T"+calInicio.get(Calendar.HOUR_OF_DAY)+":"+calInicio.get(Calendar.MINUTE)+":"+calInicio.get(Calendar.SECOND);
 		Calendar calFin = Calendar.getInstance();
 		calFin.setTime(fin);
-		String finishParam = calFin.get(Calendar.YEAR)+"-"+(1+calFin.get(Calendar.MONTH))+"-"+calFin.get(Calendar.DAY_OF_MONTH);
+		String finishParam = calFin.get(Calendar.YEAR)+"-"+(1+calFin.get(Calendar.MONTH))+"-"+calFin.get(Calendar.DAY_OF_MONTH)+
+				"T"+calFin.get(Calendar.HOUR_OF_DAY)+":"+calFin.get(Calendar.MINUTE)+":"+calFin.get(Calendar.SECOND);;
 		model.addAttribute("startParam", startParam);
 		model.addAttribute("finishParam", finishParam);
+		
+		GetRecorridosResponse recorrido = utilsService.getRecorridos(inicio, fin);
+		model.addAttribute("cantidadVisitantes", recorrido.getRecorridos().size());
+		HashMap<String, Integer> sentidos = recorrido.getCantidadSentidos();
+		model.addAttribute("sentidoDI", sentidos.get(RecorridoConstants.DERECHA_IZQUIERDA));
+		model.addAttribute("sentidoID", sentidos.get(RecorridoConstants.IZQUIERDA_DERECHA));
+		model.addAttribute("shoppers", recorrido.getCantidadPickups());
+		
 		return "activities/show";
 	}
 	
@@ -105,7 +122,7 @@ public class ActivitiesController {
 	
 	@ResponseBody
 	@RequestMapping(value="/getPromedioVisitantesDiaSemana", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> getPromedioVisitantesDiaSemana(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd") Date finish)
+	public ResponseEntity<byte[]> getPromedioVisitantesDiaSemana(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date finish)
 	{
 		JFreeChart chart = chartUtils.dataset_PromedioVisitantesDia(start, finish);
 		chart.setBackgroundPaint(Color.white);
@@ -145,12 +162,6 @@ public class ActivitiesController {
 	{
 		JFreeChart chart = chartUtils.dataset_CantidadVisitantesDiario(start, finish);
 		chart.setBackgroundPaint(Color.white);
-		final TextTitle subtitle = new TextTitle(
-				" The below Bar Chart shows population growth in Chennai(India), every 5 years from 1985 .");
-		subtitle.setFont(new Font("SansSerif", Font.PLAIN, 12));
-
-		chart.addSubtitle(subtitle);
-
 		final XYPlot plot = chart.getXYPlot();
 		plot.setForegroundAlpha(0.5f);
 
@@ -186,12 +197,6 @@ public class ActivitiesController {
 	{
 		JFreeChart chart = chartUtils.dataset_CantidadVisitantesHora(start, finish);
 		chart.setBackgroundPaint(Color.white);
-		final TextTitle subtitle = new TextTitle(
-				" The below Bar Chart shows population growth in Chennai(India), every 5 years from 1985 .");
-		subtitle.setFont(new Font("SansSerif", Font.PLAIN, 12));
-
-		chart.addSubtitle(subtitle);
-
 		final XYPlot plot = chart.getXYPlot();
 		plot.setForegroundAlpha(0.5f);
 
@@ -225,9 +230,6 @@ public class ActivitiesController {
 	@RequestMapping(value="/getBarChartView", method = RequestMethod.GET)
 	public void getBarChartView(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-
-		System.out.println("In Chart View Controller");
-
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
 		dataset.addValue(1.0, "1985-90", "1985-90");

@@ -1,14 +1,12 @@
 package com.criterya.orco.spring.daos.impl;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;

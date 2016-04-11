@@ -3,6 +3,7 @@ package com.criterya.orco.spring.services;
 import java.util.Date;
 import java.util.Map;
 
+import com.criterya.orco.beans.GetRecorridosResponse;
 import com.criterya.orco.beans.PromedioYDesviacion;
 
 public interface UtilsService {
@@ -23,4 +24,6 @@ public interface UtilsService {
 	 * @return
 	 */
 	Map<Integer, Long> getPersonasHora(Date inicio, Date fin);
+	
+	GetRecorridosResponse getRecorridos(Date inicio, Date fin);
 }

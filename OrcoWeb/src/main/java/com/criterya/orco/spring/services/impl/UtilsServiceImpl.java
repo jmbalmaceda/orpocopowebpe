@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.criterya.orco.beans.GetRecorridosResponse;
 import com.criterya.orco.beans.PromedioYDesviacion;
+import com.criterya.orco.spring.daos.RecorridoPersonaDao;
 import com.criterya.orco.spring.daos.UtilsDao;
 import com.criterya.orco.spring.services.UtilsService;
 
@@ -14,6 +16,8 @@ import com.criterya.orco.spring.services.UtilsService;
 public class UtilsServiceImpl implements UtilsService {
 	@Autowired
 	private UtilsDao utilsDao;
+	@Autowired
+	private RecorridoPersonaDao recorridosDao;
 	
 	/*
 	 * (non-Javadoc)
@@ -40,6 +44,19 @@ public class UtilsServiceImpl implements UtilsService {
 	@Override
 	public Map<Integer, Long> getPersonasHora(Date inicio, Date fin) {
 		return utilsDao.getPersonasHora(inicio, fin);
+	}
+
+	@Override
+	public GetRecorridosResponse getRecorridos(Date inicio, Date fin) {
+		return recorridosDao.getRecorridos(inicio, fin);
+	}
+
+	public RecorridoPersonaDao getRecorridosDao() {
+		return recorridosDao;
+	}
+
+	public void setRecorridosDao(RecorridoPersonaDao recorridosDao) {
+		this.recorridosDao = recorridosDao;
 	}
 
 }

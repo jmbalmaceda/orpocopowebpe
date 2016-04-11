@@ -93,9 +93,9 @@ public class ChartUtils {
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(pop);
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(
-				"Population of CSC408 Town",
-				"Date",
-				"Population",
+				"",
+				"Fecha",
+				"",
 				dataset,
 				true,
 				true,
@@ -117,9 +117,9 @@ public class ChartUtils {
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(pop);
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(
-				"Population of CSC408 Town",
+				"",
 				"Hora",
-				"Population",
+				"",
 				dataset,
 				true,
 				true,
