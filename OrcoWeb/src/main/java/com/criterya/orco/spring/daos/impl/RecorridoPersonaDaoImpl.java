@@ -10,10 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.criterya.orco.beans.GetRecorridosResponse;
+import com.criterya.orco.beans.Histograma;
 import com.criterya.orco.commons.RecorridoConstants;
 import com.criterya.orco.commons.RecorridoPersonaCommons;
 import com.criterya.orco.model.Pickup;
@@ -85,6 +87,22 @@ public class RecorridoPersonaDaoImpl extends AbstractDao implements RecorridoPer
 		
 		salida.setRecorridos(recorridos);
 		return salida;
+	}
+
+	@Override
+	public Histograma getHistograma(Date inicio, Date fin) {
+		@SuppressWarnings("unchecked")
+		List<Object[]> list = getSession().createCriteria(Pickup.class).add(Restrictions.between("currentTime", inicio, fin))
+		.setProjection(Projections.projectionList()
+				.add(Projections.groupProperty("blobX"), "x")
+				.add(Projections.groupProperty("blobY"), "y")
+				.add(Projections.count("blobId"), "count")
+		).list();
+		Histograma salida = new Histograma();
+		for (Object[] row : list) {
+			salida.setValue((Integer)row[0], (Integer)row[1], Integer.parseInt(row[2].toString()));
+		}
+		return salida ;
 	}
 
 }

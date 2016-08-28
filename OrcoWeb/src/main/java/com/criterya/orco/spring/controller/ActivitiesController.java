@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,9 +42,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.criterya.orco.beans.Histograma;
 import com.criterya.orco.beans.GetRecorridosResponse;
 import com.criterya.orco.commons.RecorridoConstants;
+import com.criterya.orco.model.RecorridoPersona;
 import com.criterya.orco.spring.dto.DashboardFilter;
+import com.criterya.orco.spring.services.PickupPersonaService;
+import com.criterya.orco.spring.services.RecorridoPersonaService;
 import com.criterya.orco.spring.services.TimesService;
 import com.criterya.orco.spring.services.UtilsService;
 import com.criterya.orco.spring.utils.ChartUtils;
@@ -58,26 +63,32 @@ public class ActivitiesController {
 
 	@Autowired
 	UtilsService utilsService;
-	
+
 	@Autowired
 	ChartUtils chartUtils;
 
+	@Autowired
+	PickupPersonaService pickupPersonaService;
+	
+	@Autowired
+	RecorridoPersonaService recorridoPersonaService;
+
 	Date inicio;
 	Date fin;
-	
+
 	public ActivitiesController() {
 	}
 
 
 	@InitBinder
-  	protected void initBinder(WebDataBinder binder) {
+	protected void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
-	            dateFormat, false));
-  		//binder.setValidator(elementFormValidator);
-  	}
-	
-	
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+				dateFormat, false));
+		//binder.setValidator(elementFormValidator);
+	}
+
+
 	@RequestMapping(value="/activities", method = RequestMethod.GET)
 	public String show(Model model) {
 		if (inicio==null || fin ==null){
@@ -100,26 +111,26 @@ public class ActivitiesController {
 		calFin.setTime(fin);
 		String finishParam = calFin.get(Calendar.YEAR)+"-"+(1+calFin.get(Calendar.MONTH))+"-"+calFin.get(Calendar.DAY_OF_MONTH)+
 				"T"+calFin.get(Calendar.HOUR_OF_DAY)+":"+calFin.get(Calendar.MINUTE)+":"+calFin.get(Calendar.SECOND);;
-		model.addAttribute("startParam", startParam);
-		model.addAttribute("finishParam", finishParam);
-		
-		GetRecorridosResponse recorrido = utilsService.getRecorridos(inicio, fin);
-		model.addAttribute("cantidadVisitantes", recorrido.getRecorridos().size());
-		HashMap<String, Integer> sentidos = recorrido.getCantidadSentidos();
-		model.addAttribute("sentidoDI", sentidos.get(RecorridoConstants.DERECHA_IZQUIERDA));
-		model.addAttribute("sentidoID", sentidos.get(RecorridoConstants.IZQUIERDA_DERECHA));
-		model.addAttribute("shoppers", recorrido.getCantidadPickups());
-		
-		return "activities/show";
+				model.addAttribute("startParam", startParam);
+				model.addAttribute("finishParam", finishParam);
+
+				GetRecorridosResponse recorrido = utilsService.getRecorridos(inicio, fin);
+				model.addAttribute("cantidadVisitantes", recorrido.getRecorridos().size());
+				HashMap<String, Integer> sentidos = recorrido.getCantidadSentidos();
+				model.addAttribute("sentidoDI", sentidos.get(RecorridoConstants.DERECHA_IZQUIERDA));
+				model.addAttribute("sentidoID", sentidos.get(RecorridoConstants.IZQUIERDA_DERECHA));
+				model.addAttribute("shoppers", recorrido.getCantidadPickups());
+
+				return "activities/show";
 	}
-	
+
 	@RequestMapping(value = "activities/updateTimes", method = RequestMethod.POST)
 	public String updateTime(@ModelAttribute("dashboardFilter") DashboardFilter filter, BindingResult result1) {
 		this.inicio = filter.getStart();
 		this.fin = filter.getFinish();
 		return "redirect:/activities.htm";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/getPromedioVisitantesDiaSemana", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getPromedioVisitantesDiaSemana(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date finish)
@@ -149,13 +160,13 @@ public class ActivitiesController {
 		PngEncoder encoder = new PngEncoder(chartImage, false, 0, 9);
 
 		//response.getOutputStream().write(encoder.pngEncode());
-		
+
 		return ResponseEntity.ok()
-	            //.contentLength(gridFsFile.getLength())
-	            .contentType(MediaType.IMAGE_PNG)
-	            .body(encoder.pngEncode());
+				//.contentLength(gridFsFile.getLength())
+				.contentType(MediaType.IMAGE_PNG)
+				.body(encoder.pngEncode());
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/getPromedioVisitantesDiario", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getPromedioVisitantesDiario(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd") Date finish)
@@ -184,13 +195,13 @@ public class ActivitiesController {
 		PngEncoder encoder = new PngEncoder(chartImage, false, 0, 9);
 
 		//response.getOutputStream().write(encoder.pngEncode());
-		
+
 		return ResponseEntity.ok()
-	            //.contentLength(gridFsFile.getLength())
-	            .contentType(MediaType.IMAGE_PNG)
-	            .body(encoder.pngEncode());
+				//.contentLength(gridFsFile.getLength())
+				.contentType(MediaType.IMAGE_PNG)
+				.body(encoder.pngEncode());
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/getPromedioVisitantesHora", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getPromedioVisitantesHora(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd") Date finish)
@@ -219,11 +230,11 @@ public class ActivitiesController {
 		PngEncoder encoder = new PngEncoder(chartImage, false, 0, 9);
 
 		//response.getOutputStream().write(encoder.pngEncode());
-		
+
 		return ResponseEntity.ok()
-	            //.contentLength(gridFsFile.getLength())
-	            .contentType(MediaType.IMAGE_PNG)
-	            .body(encoder.pngEncode());
+				//.contentLength(gridFsFile.getLength())
+				.contentType(MediaType.IMAGE_PNG)
+				.body(encoder.pngEncode());
 	}
 
 
@@ -279,7 +290,7 @@ public class ActivitiesController {
 		response.getOutputStream().write(encoder.pngEncode());
 	}
 
-	
+
 	@RequestMapping(value="/getPieChartView", method = RequestMethod.GET)
 	public void getPieChartView(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
@@ -312,6 +323,100 @@ public class ActivitiesController {
 	}
 
 
+	@ResponseBody
+	@RequestMapping(value="/downloadData", method = RequestMethod.GET)
+	public ResponseEntity<String> downloadData(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date finish)
+	{
+		StringBuffer salida = new StringBuffer();
+		salida.append("blobId, entrada, salida, duraciónSegundos, xEntrada, yEntrada, xSalida, ySalida, sentido, pickup\n");
+		GetRecorridosResponse response = utilsService.getRecorridos(start, finish);
+		List<RecorridoPersona> recorridos = response.getRecorridos();
+		for (RecorridoPersona recorridoPersona : recorridos) {
+			salida.append(recorridoPersona.getBlobId());
+			salida.append(",");
+			salida.append(recorridoPersona.getEntrada().toString());
+			salida.append(",");
+			salida.append(recorridoPersona.getSalida());
+			salida.append(",");
+			salida.append(recorridoPersona.getDuracionRecorrido());
+			salida.append(",");
+			salida.append(recorridoPersona.getRecorrido().get(0).getX());
+			salida.append(",");
+			salida.append(recorridoPersona.getRecorrido().get(0).getY());
+			salida.append(",");
+			salida.append(recorridoPersona.getRecorrido().get(recorridoPersona.getRecorrido().size()-1).getX());
+			salida.append(",");
+			salida.append(recorridoPersona.getRecorrido().get(recorridoPersona.getRecorrido().size()-1).getY());
+			salida.append(",");
+			salida.append(recorridoPersona.getSentido());
+			salida.append(",");
+			salida.append(recorridoPersona.getPickup());
+			salida.append("\n");
+		}
+
+		return ResponseEntity.ok()
+				.contentType(MediaType.TEXT_PLAIN)
+				.body(salida.toString());
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/downloadHistogramaPickup", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> downloadHistogramaPickup(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date finish){
+		Histograma aux = pickupPersonaService.getPickups(start, finish);
+		Histograma aux2 = aux.getSmooth(3); 
+		BufferedImage chartImage = new BufferedImage(640, 480, BufferedImage.TYPE_INT_BGR);
+		for(int x=0; x<640; x++){
+			for(int y=0; y<480; y++){
+				int value = aux2.getValue(x, y);
+				if (value > 0){
+					value = (int) ((double)value / aux2.getMaxValue() * 255d);
+					value = (int) (100d + value*155d/255d);
+					Color color = new Color(255, value, value);
+					chartImage.setRGB(x, y, color.getRGB());
+				}else{
+					chartImage.setRGB(x, y, Color.white.getRGB());
+				}
+			}
+		}
+
+		PngEncoder encoder = new PngEncoder(chartImage, false, 0, 9);
+
+		//response.getOutputStream().write(encoder.pngEncode());
+
+		return ResponseEntity.ok()
+				//.contentLength(gridFsFile.getLength())
+				.contentType(MediaType.IMAGE_PNG)
+				.body(encoder.pngEncode());
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/downloadHistogramaPasillo", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> downloadHistogramaPasillo(@RequestParam(value="start") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date start, @RequestParam(value="finish") @DateTimeFormat(pattern="yyyy-MM-dd'T'hh:mm:ss") Date finish){
+		Histograma aux = recorridoPersonaService.getHistograma(start, finish);
+		Histograma aux2 = aux.getSmooth(15); 
+		BufferedImage chartImage = new BufferedImage(640, 480, BufferedImage.TYPE_INT_BGR);
+		for(int x=0; x<640; x++){
+			for(int y=0; y<480; y++){
+				int value = aux2.getValue(x, y);
+				if (value > 0){
+					value = 255 -(int) ((double)value / aux2.getMaxValue() * 255);
+					Color color = new Color(255, value, value);
+					chartImage.setRGB(x, y, color.getRGB());
+				}else{
+					chartImage.setRGB(x, y, Color.white.getRGB());
+				}
+			}
+		}
+
+		PngEncoder encoder = new PngEncoder(chartImage, false, 0, 9);
+
+		//response.getOutputStream().write(encoder.pngEncode());
+
+		return ResponseEntity.ok()
+				//.contentLength(gridFsFile.getLength())
+				.contentType(MediaType.IMAGE_PNG)
+				.body(encoder.pngEncode());
+	}
 	/*
 	@RequestMapping(value = "/times/{id}/show", method = RequestMethod.GET)
 	public String showTime(@PathVariable("id") Integer id, Model model) {

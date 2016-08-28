@@ -17,5 +17,11 @@
         <property name="finish" type="time">
             <column name="finish" length="8" not-null="true" />
         </property>
+        <property name="saveVideoRGB" type="boolean">
+        	<column name="rec_video_rgb"></column>
+        </property>
+        <property name="saveVideoDEPTH" type="boolean">
+        	<column name="rec_video_depth"></column>
+        </property>
     </class>
 </hibernate-mapping>

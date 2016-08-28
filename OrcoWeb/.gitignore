@@ -10,6 +10,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/.settings
+/null
+/.classpath
+/.project
+/target
+/bin
+/src/main/work
+/src/main/webapp/WEB-INF/classes
+/target/
 
 .metadata
 .settings
@@ -17,4 +26,3 @@ hs_err_pid*
 .classpath
 target
 classes
-/bin/

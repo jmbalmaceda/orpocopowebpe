@@ -53,6 +53,11 @@
 				<button type="submit" style="float: right;" class="btn btn-primary">Actualizar</button>
 			</form:form>
 		</div>
+		<div class="panel-footer">
+			<a download="datos.csv" href="${pageContext.request.contextPath}/downloadData.htm?start=${startParam}&finish=${finishParam}">
+				<button type="button" class="btn">Descargar datos mostrados</button>
+			</a>
+		</div>
 	</div>
 
 	<!-- Resumen -->

@@ -79,6 +79,42 @@
 		  </div>
 		</spring:bind>
 		
+		<spring:bind path="saveVideoRGB">
+			<div class="form-group ${status.error ? 'has-error' : ''}">
+				<label class="col-sm-2 control-label">Grabar video RGB:</label>
+				<div class="col-sm-10">
+						<label class="radio-inline"> 
+							<form:radiobutton path="saveVideoRGB" value="FALSE" />
+							No
+						</label> 
+						<label class="radio-inline">
+							<form:radiobutton path="saveVideoRGB" value="TRUE" />
+							Si
+						</label>
+						<br />
+						<form:errors path="saveVideoRGB" class="control-label" />
+					</div>
+			</div>
+		</spring:bind>
+		
+		<spring:bind path="saveVideoDEPTH">
+			<div class="form-group ${status.error ? 'has-error' : ''}">
+				<label class="col-sm-2 control-label">Grabar video DEPTH:</label>
+				<div class="col-sm-10">
+						<label class="radio-inline"> 
+							<form:radiobutton path="saveVideoDEPTH" value="FALSE" />
+							No
+						</label> 
+						<label class="radio-inline">
+							<form:radiobutton path="saveVideoDEPTH" value="TRUE" />
+							Si
+						</label>
+						<br />
+						<form:errors path="saveVideoDEPTH" class="control-label" />
+					</div>
+			</div>
+		</spring:bind>
+		
 		<div class="form-group">
 		  <div class="col-sm-offset-2 col-sm-10">
 			<c:choose>

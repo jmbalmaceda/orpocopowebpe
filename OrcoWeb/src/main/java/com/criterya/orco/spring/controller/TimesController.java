@@ -71,6 +71,8 @@ public class TimesController {
 		Times time = new Times();
 		time.setStart(Calendar.getInstance().getTime());
 		time.setFinish(Calendar.getInstance().getTime());
+		time.setSaveVideoRGB(true);
+		time.setSaveVideoDEPTH(false);
 		model.addAttribute("time", time);
 		return "/times/form";
 	}

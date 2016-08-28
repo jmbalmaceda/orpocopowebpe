@@ -14,6 +14,8 @@ public class Times implements java.io.Serializable {
 	private int weekDay;
 	private Date start;
 	private Date finish;
+	private Boolean saveVideoRGB;
+	private Boolean saveVideoDEPTH;
 
 	public Times() {
 	}
@@ -54,6 +56,22 @@ public class Times implements java.io.Serializable {
 
 	public void setFinish(Date finish) {
 		this.finish = finish;
+	}
+
+	public Boolean getSaveVideoRGB() {
+		return saveVideoRGB;
+	}
+
+	public void setSaveVideoRGB(Boolean saveVideoRGB) {
+		this.saveVideoRGB = saveVideoRGB;
+	}
+
+	public Boolean getSaveVideoDEPTH() {
+		return saveVideoDEPTH;
+	}
+
+	public void setSaveVideoDEPTH(Boolean saveVideoDEPTH) {
+		this.saveVideoDEPTH = saveVideoDEPTH;
 	}
 
 }
